@@ -196,7 +196,7 @@ def main():
         # train for one epoch
         train_acc, train_los = train(train_loader, net, criterion, optimizer, epoch, log)
 
-        current_learning_rate = float(scheduler.get_lr()[-1])
+        current_learning_rate = float(scheduler.get_last_lr())
         # print('lr:',current_learning_rate)
 
         scheduler.step()
