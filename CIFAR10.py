@@ -1,16 +1,16 @@
 from __future__ import print_function
-from PIL import Image
+
 import os
 import os.path
-import numpy as np
 import sys
-if sys.version_info[0] == 2:
-    import cPickle as pickle
-else:
-    import pickle
+
+import numpy as np
+from PIL import Image
+
+import pickle
 
 import torch.utils.data as data
-from .utils import download_url, check_integrity
+# from utils import download_url, check_integrity
 
 
 class CIFAR10(data.Dataset):
@@ -83,23 +83,19 @@ class CIFAR10(data.Dataset):
             self.train_data = np.concatenate(self.train_data)
             self.train_data = self.train_data.reshape((50000, 3, 32, 32))
 
-
-
-            mean = np.mean(self.train_data, axis=(0,2,3))
-            std = np.std(self.train_data, axis=(0,2,3))
-
+            mean = np.mean(self.train_data, axis=(0, 2, 3))
+            std = np.std(self.train_data, axis=(0, 2, 3))
 
             print('mean: ', mean)
-            print('std: ',std)
-
+            print('std: ', std)
 
             print('mean.shape = ', mean.shape)
             print('std.shape', std.shape)
 
         for i in range(3):
-            print (i)
+            print(i)
             self.train_data[:, i, :, :] = self.train_data[:, i, :, :] - mean[i]
-            self.train_data[:, i, :, :] = self.train_data[:, i, :, :]/std[i]
+            self.train_data[:, i, :, :] = self.train_data[:, i, :, :] / std[i]
             # self.test_data[:, i, :, :] = self.test_data[:, i, :, :] - mean[i]
             # self.test_data[:, i, :, :] = self.test_data[:, i, :, :]/std[i]   
 
@@ -122,7 +118,6 @@ class CIFAR10(data.Dataset):
             fo.close()
             self.test_data = self.test_data.reshape((10000, 3, 32, 32))
 
-
             self.train_data = []
             self.train_labels = []
             for fentry in self.train_list:
@@ -143,23 +138,21 @@ class CIFAR10(data.Dataset):
             self.train_data = np.concatenate(self.train_data)
             self.train_data = self.train_data.reshape((50000, 3, 32, 32))
 
-            print('train_data.shape: ',train_data.shape)
-            print('test_data.shape: ',test_data.shape)
+            print('train_data.shape: ', train_data.shape)
+            print('test_data.shape: ', test_data.shape)
 
-            mean = np.mean(self.train_data, axis=(0,2,3))
-            std = np.std(self.train_data, axis=(0,2,3))
-
+            mean = np.mean(self.train_data, axis=(0, 2, 3))
+            std = np.std(self.train_data, axis=(0, 2, 3))
 
         for i in range(3):
-            print (i)
+            print(i)
             self.train_data[:, i, :, :] = self.train_data[:, i, :, :] - mean[i]
-            self.train_data[:, i, :, :] = self.train_data[:, i, :, :]/std[i]
+            self.train_data[:, i, :, :] = self.train_data[:, i, :, :] / std[i]
             self.test_data[:, i, :, :] = self.test_data[:, i, :, :] - mean[i]
-            self.test_data[:, i, :, :] = self.test_data[:, i, :, :]/std[i]   
+            self.test_data[:, i, :, :] = self.test_data[:, i, :, :] / std[i]
 
         self.train_data = self.train_data.transpose((0, 2, 3, 1))  # convert to HWC
         self.test_data = self.test_data.transpose((0, 2, 3, 1))  # convert to HWC
-
 
     def __getitem__(self, index):
         """
